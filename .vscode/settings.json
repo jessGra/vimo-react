@@ -1,0 +1,17 @@
+{
+    "cSpell.words": [
+        "LATAM",
+        "MEDIAPIPE",
+        "ONNX",
+        "onnxruntime",
+        "photoplethysmography",
+        "RPPG",
+        "Telehealth",
+        "Telemedicine",
+        "vimo",
+        "Vimo",
+        "visig",
+        "Visigns"
+    ],
+    "prettier.printWidth": 120
+}

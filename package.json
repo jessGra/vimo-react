@@ -1,0 +1,31 @@
+{
+  "name": "vimo-visig-web-react",
+  "private": true,
+  "version": "1.0.0",
+  "description": "This example is a demonstration of basic usage of ONNX Runtime Web using a bundler.",
+  "dependencies": {
+    "onnxruntime-web": "^1.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.2.0",
+    "copy-webpack-plugin": "^8.1.1",
+    "html-webpack-plugin": "^5.3.2",
+    "sass": "^1.38.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.2.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  }
+}
