@@ -1,0 +1,11 @@
+div.error-boundary {
+  height: 100vh;
+  background-color: rgba(95, 97, 97, 0.5);
+  padding: 2rem;
+}
+
+.error-boundary h1 {
+  text-align: center;
+  border-bottom: 1px solid;
+  padding: 0 0 1rem 0;
+}

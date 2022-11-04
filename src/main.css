@@ -1,11 +1,105 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --color-background-primary: 23, 21, 49;
+  --color-background-secondary: 99, 80, 215;
+  --color-background-tertiary: 162, 69, 255;
+  --color-background-light: #fff;
+  --color-background-light-hover: #e6e6e6;
+  --color-indira-navbar: #5e58ba;
+  --color-sidebar-dark: #1c1c1c;
+  --color-background-dark-opacity: #272939b2;
+  --color-blue-indira: #00adef;
+
+  --color-font-light: #ececec;
+
+  --width-sidebar: 13%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  color: var(--color-font-light);
+}
+
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.show {
+  display: block;
+}
+
+.ml-0 {
+  margin-left: 0;
+}
+
+.h-95 {
+  height: 95%;
+}
+
+/* -------------------- media sizes css ------------------ */
+/* mobile - Small */
+@media screen and (max-width: 320px) {
+  body {
+    background-color: #5e58ba;
+  }
+  :root {
+    --width-sidebar: 65%;
+  }
+}
+
+/* mobile - Medium - Large */
+@media (min-width: 321px) and (max-width: 480px) {
+  body {
+    background-color: #bab058;
+  }
+  :root {
+    --width-sidebar: 50%;
+  }
+}
+
+/* iPads, tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  body {
+    background-color: #ba5e58;
+  }
+
+  :root {
+    --width-sidebar: 30%;
+  }
+}
+
+/* Small screens, laptops */
+@media (min-width: 769px) and (max-width: 1024px) {
+  body {
+    background-color: #53d48d;
+  }
+  :root {
+    --width-sidebar: 20%;
+  }
+}
+
+/* Desktops, large screens */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  body {
+    background-color: #3b3b3b;
+  }
+  :root {
+    --width-sidebar: 20%;
+  }
+}
+
+/* Extra large screens, TV */
+@media screen and (min-width: 1201px) {
+  body {
+    background-color: #d453c3;
+  }
 }

@@ -1,0 +1,146 @@
+.app {
+  height: 100vh;
+  transition: margin-left 0.2s;
+  background-color: rgb(var(--color-background-primary));
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: center;
+  background-size: contain;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#main {
+  display: none;
+  width: 100%;
+  padding: 2rem;
+  height: calc(100% - 64px);
+}
+
+/* #main > :first-child > * {
+  z-index: 1;
+} */
+
+.mediapipe-controls-panel {
+  width: fit-content;
+}
+
+.input_video {
+  display: none;
+  visibility: hidden;
+}
+
+.input_video.selfie {
+  transform: scale(-1, 1);
+}
+
+.input_image {
+  position: absolute;
+}
+
+.loading {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  backface-visibility: hidden;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+.loading .message {
+  font-size: x-large;
+}
+
+.loading .spinner {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  animation: spin 1s linear infinite;
+  border: 32px solid #bebebe;
+  border-top: 32px solid #3498db;
+  border-radius: 50%;
+}
+
+.loaded .loading {
+  opacity: 0;
+  display: none;
+}
+
+.shoutout {
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  text-align: center;
+  font-size: 24px;
+  position: absolute;
+}
+
+.margin-app {
+  margin-left: var(--width-sidebar);
+}
+
+.output-canvas-container {
+  width: 100%;
+  margin: 0 auto;
+  height: calc(80% - 1rem);
+  background-color: var(--color-background-dark-opacity);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+}
+
+.output_canvas {
+  border-radius: inherit;
+}
+
+.recommendations {
+  background-color: var(--color-background-dark-opacity);
+  border-radius: 1rem;
+  height: auto;
+  max-height: 20%;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.recommendations > ul {
+  margin: 0;
+}
+
+.recommendations > ul > li {
+  padding: 0.2rem 0;
+}
+
+.progress-bar-container {
+  max-height: 5%;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+.progress-bar-container .progress {
+  border-radius: 1rem;
+}
+
+.progress-bar-container .progress-bar {
+  background-color: var(--color-indira-navbar);
+}
+
+/* -------------------- media sizes css ------------------ */
+/* mobile - Small */
+@media screen and (max-width: 700px) {
+  .margin-app {
+    margin-left: 0;
+  }
+}
