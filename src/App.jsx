@@ -657,40 +657,55 @@ function App({ setComponentLoaded }) {
 
         // draw corners of face detected
         canvasCtx.beginPath();
-        canvasCtx.lineWidth = "4";
-        canvasCtx.strokeStyle = "blue";
+        canvasCtx.lineWidth = "3";
+        canvasCtx.strokeStyle = "#5e58ba";
+        const lineLength = 60;
+        const radioArc = 10;
 
         // top-left
-        canvasCtx.moveTo(face_coordinates.x1, face_coordinates.y1);
-        canvasCtx.lineTo(face_coordinates.x1, face_coordinates.y1 + 20);
-        canvasCtx.moveTo(face_coordinates.x1, face_coordinates.y1);
-        canvasCtx.lineTo(face_coordinates.x1 + 20, face_coordinates.y1);
+        canvasCtx.lineTo(face_coordinates.x1, face_coordinates.y1 + lineLength);
+        canvasCtx.arc(
+          face_coordinates.x1 + radioArc,
+          face_coordinates.y1 + radioArc,
+          radioArc,
+          1 * Math.PI,
+          1.5 * Math.PI
+        );
+        canvasCtx.lineTo(face_coordinates.x1 + lineLength, face_coordinates.y1);
 
         // top-right
-        canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y1);
-        canvasCtx.lineTo(face_coordinates.x2, face_coordinates.y1 + 20);
-        canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y1);
-        canvasCtx.lineTo(face_coordinates.x2 - 20, face_coordinates.y1);
-
-        // bottom-left
-        canvasCtx.moveTo(face_coordinates.x1, face_coordinates.y2);
-        canvasCtx.lineTo(face_coordinates.x1 + 20, face_coordinates.y2);
-        canvasCtx.moveTo(face_coordinates.x1, face_coordinates.y2);
-        canvasCtx.lineTo(face_coordinates.x1, face_coordinates.y2 - 20);
+        canvasCtx.moveTo(face_coordinates.x2 - lineLength, face_coordinates.y1);
+        canvasCtx.arc(
+          face_coordinates.x2 - radioArc,
+          face_coordinates.y1 + radioArc,
+          radioArc,
+          1.5 * Math.PI,
+          2 * Math.PI
+        );
+        canvasCtx.lineTo(face_coordinates.x2, face_coordinates.y1 + lineLength);
 
         // bottom-right
-        canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y2);
-        canvasCtx.lineTo(face_coordinates.x2, face_coordinates.y2 - 20);
-        canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y2);
-        canvasCtx.lineTo(face_coordinates.x2 - 20, face_coordinates.y2);
+        canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y2 - lineLength);
+        canvasCtx.arc(face_coordinates.x2 - radioArc, face_coordinates.y2 - radioArc, radioArc, 0, 0.5 * Math.PI);
+        canvasCtx.lineTo(face_coordinates.x2 - lineLength, face_coordinates.y2);
+        // canvasCtx.moveTo(face_coordinates.x2, face_coordinates.y2);
 
-        canvasCtx.stroke();
+        // bottom-left
+        canvasCtx.moveTo(face_coordinates.x1 + lineLength, face_coordinates.y2);
+        canvasCtx.arc(
+          face_coordinates.x1 + radioArc,
+          face_coordinates.y2 - radioArc,
+          radioArc,
+          0.5 * Math.PI,
+          1 * Math.PI
+        );
+        canvasCtx.lineTo(face_coordinates.x1, face_coordinates.y2 - lineLength);
 
         // draw rectangle roi
-        canvasCtx.beginPath();
+        /* canvasCtx.beginPath();
         canvasCtx.lineWidth = "4";
         canvasCtx.strokeStyle = "green";
-        canvasCtx.rect(...Object.values(roi_rectangle));
+        canvasCtx.rect(...Object.values(roi_rectangle)); */
         canvasCtx.stroke();
       }
 
