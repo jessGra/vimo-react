@@ -9,7 +9,13 @@ function Navbar() {
   };
 
   const hideConfigDrop = (event) => {
-    if (event.target.matches("#dropConfigIcon") || event.target.matches(".nav-dropdown-btn")) return;
+    if (
+      event.target.matches("#dropConfigIcon") ||
+      event.target.matches(".nav-dropdown-btn") ||
+      event.target.matches(".dropdown-trigger") ||
+      event.target.parentElement.matches(".dropdown-trigger")
+    )
+      return;
     $("#configDrop").fadeOut(200);
   };
 
