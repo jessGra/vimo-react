@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import imageBackground from "./assets/imgs/indira-logo-white-transparent.svg";
+import oxygenS from "./assets/imgs/oxygen_saturation_icon.png";
+import bloodP from "./assets/imgs/blood_pressure_icon.jpg";
 import "./App.css";
 import "./assets/css/controls-utils.css";
 const ort = require("onnxruntime-web");
@@ -785,7 +787,7 @@ function App({ setComponentLoaded }) {
               </div>
             </div>
             <div className="recommendations">
-              <h4>Recommendations</h4>
+              <h4 className="m-0">Recommendations</h4>
               <ul>
                 <li> Keep your face facing the camera. </li>
                 <li>Keep a distance no greater than 3 meters and no less than 50 centimeters from the camera.</li>
@@ -799,61 +801,66 @@ function App({ setComponentLoaded }) {
                 <i className="bi bi-play-fill"></i> Vital signs detection
               </button>
             </div>
+            {/* cards with vital signs */}
             <div id="div_vital_signs_values">
               <div>
-                <div>
-                  <div className="card text-center h-100">
-                    <div className="card-header">Heart Rate</div>
-                    <div className="card-body">
-                      <div className="d-none" id="div_hr_value">
-                        <h5 className="card-title text-black" id="hr_value"></h5>
-                        <p className="card-text">bpm</p>
-                      </div>
-                      <span className="spinner-border" role="status" aria-hidden="true"></span>
-                    </div>
-                    <div className="card-footer text-muted">
-                      <i className="bi bi-heart-pulse"></i>
-                    </div>
+                <div className="card-vital-signs">
+                  <div className="card-header-vital-signs">
+                    <h3>Heart Rate</h3>
+                    <i className="bi bi-heart-pulse"></i>
                   </div>
-                </div>
-                <div>
-                  <div className="card text-center h-100">
-                    <div className="card-header">Oxygen Saturation</div>
-                    <div className="card-body">
-                      <div className="d-none" id="div_spo2_value">
-                        <h5 className="card-title text-black" id="spo2_value"></h5>
-                        <p className="card-text">SpO2 %</p>
-                      </div>
-                      <span className="spinner-border" role="status" aria-hidden="true"></span>
+                  <div className="card-body-vital-signs">
+                    <div className="d-none" id="div_hr_value">
+                      <h5 className="text-black card-body-vital-signs-text" id="hr_value"></h5>
                     </div>
-                    <div className="card-footer text-muted">
-                      <img width="16" height="20" src="./images/oxygen_saturation_icon.png" />
-                    </div>
+                    <span className="spinner-border spinner-vital-signs" role="status" aria-hidden="true"></span>
                   </div>
-                </div>
-                <div>
-                  <div className="card text-center h-100">
-                    <div className="card-header">Blood Pressure</div>
-                    <div className="card-body">
-                      <div className="d-none" id="div_nibp_value">
-                        <div className="row">
-                          <h5 className="card-title text-black" id="nibp_sys_dia_value"></h5>
-                        </div>
-                        <div className="row">
-                          <p className="card-text" id="nibp_map_value"></p>
-                        </div>
-                        <p className="card-text">mmHg</p>
-                      </div>
-                      <span className="spinner-border" role="status" aria-hidden="true"></span>
-                    </div>
-                    <div className="card-footer text-muted">
-                      <img width="16" height="20" src="./images/blood_pressure_icon.jpg" />
-                    </div>
+                  <div className="card-footer-vital-signs">
+                    <p className="card-text">bpm</p>
                   </div>
                 </div>
               </div>
-              <canvas id="canvasOutput" width="512" height="512" className="d-none"></canvas>
+              <div>
+                <div className="card-vital-signs">
+                  <div className="card-header-vital-signs">
+                    <h3>Oxygen Saturation</h3>
+                    <img src={oxygenS} />
+                  </div>
+                  <div className="card-body-vital-signs">
+                    <div className="d-none" id="div_spo2_value">
+                      <h5 className="text-black card-body-vital-signs-text" id="spo2_value"></h5>
+                    </div>
+                    <span className="spinner-border spinner-vital-signs" role="status" aria-hidden="true"></span>
+                  </div>
+                  <div className="card-footer-vital-signs">
+                    <p className="card-text">SpO2 %</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="card-vital-signs">
+                  <div className="card-header-vital-signs">
+                    <h3>Blood Pressure</h3>
+                    <img src={bloodP} />
+                  </div>
+                  <div className="card-body-vital-signs">
+                    <div className="d-none" id="div_nibp_value">
+                      <div className="row">
+                        <h5 className="text-black card-body-vital-signs-text" id="nibp_sys_dia_value"></h5>
+                      </div>
+                      <div className="row">
+                        <p className="card-text" id="nibp_map_value"></p>
+                      </div>
+                    </div>
+                    <span className="spinner-border spinner-vital-signs" role="status" aria-hidden="true"></span>
+                  </div>
+                  <div className="card-footer-vital-signs">
+                    <p className="card-text">mmHg</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            <canvas id="canvasOutput" width="512" height="512" className="d-none"></canvas>
           </div>
         </div>
         <div className="progress-bar-container">

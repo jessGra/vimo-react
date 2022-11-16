@@ -110,7 +110,7 @@
   background-color: var(--color-background-dark-opacity);
   border-radius: 1rem;
   height: auto;
-  max-height: 20%;
+  /* max-height: 20%; */
   margin-top: 1rem;
   padding: 1rem;
 }
@@ -120,7 +120,7 @@
 }
 
 .recommendations > ul > li {
-  padding: 0.2rem 0;
+  padding: 0;
 }
 
 .progress-bar-container {
@@ -135,6 +135,65 @@
 
 .progress-bar-container .progress-bar {
   background-color: var(--color-indira-navbar);
+}
+
+#div_vital_signs_values > div {
+  padding: 1rem 2rem;
+}
+#div_vital_signs_values > div:first-child {
+  padding: 0 2rem 1rem;
+}
+#div_vital_signs_values > div:last-child {
+  padding: 1rem 2rem 0;
+}
+
+.card-vital-signs {
+  background-color: var(--color-background-light);
+  color: var(--color-font-dark);
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.card-vital-signs > .card-header-vital-signs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-vital-signs > .card-header-vital-signs h3 {
+  font-size: 1.3rem;
+}
+
+.card-vital-signs > .card-header-vital-signs i {
+  font-size: 1.3rem;
+}
+
+.card-vital-signs > .card-header-vital-signs img {
+  width: 24px;
+  height: 24px;
+}
+
+.card-vital-signs > .card-body-vital-signs {
+  text-align: center;
+  padding: 0.8rem;
+}
+
+.card-body-vital-signs .card-body-vital-signs-text {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.card-body-vital-signs > .spinner-vital-signs {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.card-vital-signs > .card-footer-vital-signs {
+  text-align: center;
+  color: var(--color-font-dark);
+  font-size: 1.2rem;
 }
 
 /* -------------------- media sizes css ------------------ */
