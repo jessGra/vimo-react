@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import imageBackground from "./assets/imgs/indira-logo-white-transparent.svg";
 import oxygenS from "./assets/imgs/oxygen_saturation_icon.png";
 import bloodP from "./assets/imgs/blood_pressure_icon.jpg";
@@ -28,6 +28,10 @@ import Presentation from "./components/presentation/Presentation.jsx";
 
 function App({ setComponentLoaded }) {
   const [start, setStart] = useState(false);
+  const [isGettingSings, setIsGettingSings] = useState(false);
+  const timerProgressBar = useRef(null);
+  const [percentProgressBar, setPercentProgressBar] = useState(0);
+
   const handleClickStart = () => {
     $(".presentation").fadeOut(400, function () {
       setStart(true);
@@ -36,9 +40,7 @@ function App({ setComponentLoaded }) {
   };
 
   let rgb_channel_data = { r_channel: [], g_channel: [], b_channel: [] };
-  let process_vital_signs_detections = "stop";
-  let seconds = 0;
-  let timer_progress_bar = null;
+
   let number_frames = 0;
   const hr_spo2_encoder_length = 9;
   const nibp_encoder_length = 41;
@@ -114,7 +116,7 @@ function App({ setComponentLoaded }) {
       inputs_names_nibp_dia_inference_session = nibp_dia_inference_session.handler.inputNames;
       inputs_names_nibp_map_inference_session = nibp_map_inference_session.handler.inputNames;
     } catch (e) {
-      setError(`failed to inference ONNX model: ${e}.`);
+      console.log(`failed to inference ONNX model: ${e}.`);
     }
   };
 
@@ -139,67 +141,44 @@ function App({ setComponentLoaded }) {
     //modal_report_vital_signs.show();
   };
 
-  const control_process_vital_signs_detections = () => {
-    if (process_vital_signs_detections === "stop") {
-      $("#button_process_vital_signs_detections").removeClass("btn-primary");
-      $("#button_process_vital_signs_detections").addClass("btn-danger");
-      $("#button_process_vital_signs_detections > i").removeClass("bi-play-fill");
-      $("#button_process_vital_signs_detections > i").addClass("bi-stop-fill");
-      $("#div_vital_signs_values").removeClass("d-none");
-      $("#div_vital_signs_values").addClass("d-block");
-      $("#video_progress_bar").removeClass("d-none");
-      $("#video_progress_bar").addClass("d-block");
-      seconds = 0;
-      timer_progress_bar = setInterval(() => {
-        seconds++;
-        if (seconds <= 60) {
-          let width = seconds * (100 / 60);
-          $("#video_progress_bar div.progress-bar").css({ width: width + "%" });
-          $("#video_progress_bar div.progress-bar").text(Math.round(width) + "%");
-          $("#video_progress_bar div.progress-bar").attr("aria-valuenow", Math.round(width));
-        } else {
-          control_process_vital_signs_detections();
-        }
-      }, 1000);
-      process_vital_signs_detections = "play";
-      number_frames = 0;
-      rgb_channel_data = { r_channel: [], g_channel: [], b_channel: [] };
-      fps_setted = false;
-      fps_history_to_set_fps = [];
-      initial_maximum_number_frames = Math.round(_.mean(fpsControl.g) * (hr_spo2_encoder_length / 2));
-      hr_values_history_to_report = [];
-      spo2_values_history_to_report = [];
-      nibp_sys_dia_to_report = null;
-      nibp_map_to_report = null;
-    } else if (process_vital_signs_detections === "play") {
-      $("#button_process_vital_signs_detections").removeClass("btn-danger");
-      $("#button_process_vital_signs_detections").addClass("btn-primary");
-      $("#button_process_vital_signs_detections > i").removeClass("bi-stop-fill");
-      $("#button_process_vital_signs_detections > i").addClass("bi-play-fill");
-      $("#div_vital_signs_values").removeClass("d-block");
-      $("#div_vital_signs_values").addClass("d-none");
-      process_vital_signs_detections = "stop";
-      if ($("#div_hr_value").hasClass("d-block")) {
-        $("#div_hr_value").next("span.spinner-border").removeClass("d-none");
-        $("#div_hr_value").removeClass("d-block");
-        $("#div_hr_value").addClass("d-none");
-      }
-      if ($("#div_spo2_value").hasClass("d-block")) {
-        $("#div_spo2_value").next("span.spinner-border").removeClass("d-none");
-        $("#div_spo2_value").removeClass("d-block");
-        $("#div_spo2_value").addClass("d-none");
-      }
-      if ($("#div_nibp_value").hasClass("d-block")) {
-        $("#div_nibp_value").next("span.spinner-border").removeClass("d-none");
-        $("#div_nibp_value").removeClass("d-block");
-        $("#div_nibp_value").addClass("d-none");
-      }
-      $("#video_progress_bar").removeClass("d-block");
-      $("#video_progress_bar").addClass("d-none");
-      clearInterval(timer_progress_bar);
-      show_report_vital_signs();
-    }
+  const handleGetVitalSigns = () => {
+    setIsGettingSings((isGettingSings) => !isGettingSings);
   };
+
+  useEffect(() => {
+    // skip initial render
+    return () => {
+      // do something with dependency isGettingSings
+      if (isGettingSings) {
+        timerProgressBar.current && clearInterval(timerProgressBar.current);
+        show_report_vital_signs();
+      } else if (!isGettingSings) {
+        setPercentProgressBar(0); //reset del porcentaje
+        const startTime = new Date().getTime();
+        const timeOfAnalysis = 30; //1 minuto
+        timerProgressBar.current = setInterval(function () {
+          const timePassed = (new Date().getTime() - startTime) / 1000;
+          if (timePassed > timeOfAnalysis) {
+            setPercentProgressBar(100);
+            clearInterval(timerProgressBar.current);
+            setIsGettingSings(false); //termina de obtener signs
+            return;
+          }
+          setPercentProgressBar(Math.round((timePassed * 100) / 60));
+        }, 1000);
+
+        number_frames = 0;
+        rgb_channel_data = { r_channel: [], g_channel: [], b_channel: [] };
+        fps_setted = false;
+        fps_history_to_set_fps = [];
+        initial_maximum_number_frames = Math.round(_.mean(fpsControl.g) * (hr_spo2_encoder_length / 2));
+        hr_values_history_to_report = [];
+        spo2_values_history_to_report = [];
+        nibp_sys_dia_to_report = null;
+        nibp_map_to_report = null;
+      }
+    };
+  }, [isGettingSings]);
 
   const get_face_coordinates = (boundingBox_detected, canvas) => {
     let half_width = boundingBox_detected.width / 2;
@@ -354,9 +333,6 @@ function App({ setComponentLoaded }) {
 
     return [r_channel_average, g_channel_average, b_channel_average];
   };
-  /* ----------------------- */
-  const [dataC, setDataC] = useState(null);
-  const [error, setError] = useState(null);
   useEffect(() => {
     try {
       testSupport([{ client: "Chrome" }]);
@@ -379,18 +355,10 @@ function App({ setComponentLoaded }) {
     const controlsElement = document.getElementsByClassName("mediapipe-controls-panel")[0];
     const canvasCtx = canvasElement.getContext("2d", { alpha: false, willReadFrequently: true });
 
-    $(window).on("load", () => {
-      console.log("pag cargada");
-      //set_max_height_div_vital_signs();
-      create_inference_sessions();
-    });
+    create_inference_sessions();
 
     $(window).resize(() => {
       //set_max_height_div_vital_signs();
-    });
-
-    $("#button_process_vital_signs_detections").on("click", () => {
-      control_process_vital_signs_detections();
     });
 
     const faceDetection = new FaceDetection({
@@ -415,7 +383,7 @@ function App({ setComponentLoaded }) {
       if (results.detections.length > 0) {
         let roi_rectangle = get_roi_rectangle(results.detections[0].landmarks, canvasCtx.canvas);
 
-        if (process_vital_signs_detections === "play") {
+        if (isGettingSings) {
           let roi = new cv.Mat();
           roi = frame.roi(roi_rectangle);
 
@@ -797,8 +765,13 @@ function App({ setComponentLoaded }) {
           </div>
           <div id="div_vital_signs" className="col-4">
             <div>
-              <button type="button" className="btn btn-primary" id="button_process_vital_signs_detections">
-                <i className="bi bi-play-fill"></i> Vital signs detection
+              <button
+                type="button"
+                className={`btn ${isGettingSings ? "btn-danger" : "btn-primary"}`}
+                id="button_process_vital_signs_detections"
+                onClick={handleGetVitalSigns}
+              >
+                <i className={`bi ${isGettingSings ? "bi-stop-fill" : "bi-play-fill"}`}></i> Vital signs detection
               </button>
             </div>
             {/* cards with vital signs */}
@@ -864,19 +837,22 @@ function App({ setComponentLoaded }) {
           </div>
         </div>
         <div className="progress-bar-container">
-          <div id="video_progress_bar" className="progress d-none">
+          <div className={`progress ${isGettingSings ? "" : "d-none"}`}>
             <div
               className="progress-bar"
               role="progressbar"
               aria-label="Video progress bar"
-              aria-valuenow="0"
+              aria-valuenow={percentProgressBar}
               aria-valuemin="0"
               aria-valuemax="100"
-            ></div>
+              style={{ width: percentProgressBar + "%" }}
+            >
+              {percentProgressBar} %
+            </div>
           </div>
         </div>
       </div>
-      {/* modal 
+      modal 
         <div
           className="modal fade"
           id="modal_report_vital_signs"
@@ -945,9 +921,9 @@ function App({ setComponentLoaded }) {
               <div className="modal-footer"></div>
             </div>
           </div>
-        </div>*/}
-      <div className="semi-ellipse lef-bottom" />
-      <div className="semi-ellipse right-top" />
+        </div>
+      {!start && <div className="semi-ellipse lef-bottom" />}
+      {!start && <div className="semi-ellipse right-top" />}
     </div>
   );
 }
